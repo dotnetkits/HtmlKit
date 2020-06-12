@@ -3,7 +3,7 @@
 //
 // Author: Jeffrey Stedfast <jeff@xamarin.com>
 //
-// Copyright (c) 2015-2018 Xamarin Inc. (www.xamarin.com)
+// Copyright (c) 2015-2020 Xamarin Inc. (www.xamarin.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -649,9 +649,9 @@ namespace HtmlKit {
 		TH,
 
 		/// <summary>
-		/// The HTML &lt;thread&gt; tag.
+		/// The HTML &lt;thead&gt; tag.
 		/// </summary>
-		Thread,
+		THead,
 
 		/// <summary>
 		/// The HTML &lt;time&gt; tag.
@@ -740,7 +740,7 @@ namespace HtmlKit {
 		{
 			var values = (HtmlTagId[]) Enum.GetValues (typeof (HtmlTagId));
 
-			TagNameToId = new Dictionary<string, HtmlTagId> (values.Length - 1, StringComparer.OrdinalIgnoreCase);
+			TagNameToId = new Dictionary<string, HtmlTagId> (values.Length - 1, OptimizedOrdinalIgnoreCaseComparer.Comparer);
 
 			for (int i = 0; i < values.Length - 1; i++)
 				TagNameToId.Add (values[i].ToHtmlTagName (), values[i]);
@@ -761,7 +761,7 @@ namespace HtmlKit {
 
 			var name = value.ToString ();
 
-#if PORTABLE || NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_3 || NETSTANDARD1_6
 			var field = typeof (HtmlTagId).GetTypeInfo ().GetDeclaredField (name);
 			var attrs = field.GetCustomAttributes (typeof (HtmlTagNameAttribute), false).ToArray ();
 #else

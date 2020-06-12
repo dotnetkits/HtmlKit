@@ -3,7 +3,7 @@
 //
 // Author: Jeffrey Stedfast <jeff@xamarin.com>
 //
-// Copyright (c) 2015-2018 Xamarin Inc. (www.xamarin.com)
+// Copyright (c) 2015-2020 Xamarin Inc. (www.xamarin.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -601,7 +601,7 @@ namespace HtmlKit {
 		{
 			var values = (HtmlAttributeId[]) Enum.GetValues (typeof (HtmlAttributeId));
 
-			AttributeNameToId = new Dictionary<string, HtmlAttributeId> (values.Length - 1, StringComparer.OrdinalIgnoreCase);
+			AttributeNameToId = new Dictionary<string, HtmlAttributeId> (values.Length - 1, OptimizedOrdinalIgnoreCaseComparer.Comparer);
 
 			for (int i = 1; i < values.Length; i++)
 				AttributeNameToId.Add (values[i].ToAttributeName (), values[i]);
@@ -619,7 +619,7 @@ namespace HtmlKit {
 		{
 			var name = value.ToString ();
 
-#if PORTABLE || NETSTANDARD
+#if NETSTANDARD1_0 || NETSTANDARD1_3 || NETSTANDARD1_6
 			var field = typeof (HtmlAttributeId).GetTypeInfo ().GetDeclaredField (name);
 			var attrs = field.GetCustomAttributes (typeof (HtmlAttributeNameAttribute), false).ToArray ();
 #else
